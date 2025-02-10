@@ -1,0 +1,35 @@
+<!--
+  -  Checkpoint via syslog decoders
+  -  Was needed for a test where syslog messages were sent directly from an 1800 appliance and not via the CheckPoint management log.
+  -  Author: Andreas Schreiber
+  -  Copyright (C) 2024
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2.
+-->
+ 
+<decoder name="checkpoint1800-syslog">
+  <prematch>^\s*\S+\s+\S+\s+\d+\s+\d\d:\d\d:\d\d\s+\S+</prematch>
+</decoder>
+ 
+<decoder name="checkpoint1800-syslog-fw">
+  <parent>checkpoint1800-syslog</parent>
+  <type>firewall</type>
+  <!-- <prematch offset="after_parent">\s*Action="[accept|drop|reject|prevent]"</prematch> -->
+  <regex offset="after_parent">\s*Action="(\w+)"</regex>
+  <!-- <regex>\s+service_id="(\S+)"\s+src="(\w*\.*\w*\.*\w*\.*\w*)"\s+dst="(\w*\.*\w*\.*\w*\.*\w*)".+</regex> -->
+  <order>action</order>
+</decoder>
+ 
+<decoder name="checkpoint1800-syslog-fw">
+  <parent>checkpoint1800-syslog</parent>
+  <type>firewall</type>
+  <regex offset="after_parent">\s+src="(\S+)"</regex>
+  <regex>\s+dst="(\S+)"</regex>
+  <order>srcip,dstip</order>
+</decoder>
+ 
+<decoder name="checkpoint1800-syslog-fw">
+  <parent>checkpoint1800-syslog</parent>
+  <type>firewall</type>
+  <regex offset="after_parent">\s+svc="(\d+)"\s+sport_svc="(\d+)"</regex>
+  <order>dstport,srcport</order>
+</decoder>
