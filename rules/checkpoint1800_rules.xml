@@ -1,0 +1,47 @@
+<!--
+  -  CheckPoint 1800 Firewall rules
+  -  Created by A. Schreiber
+  -  Copyright (C) 2024
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2.
+-->
+
+<group name="checkpoint1800,syslog,">
+  <rule id="666666" level="11">
+    <decoded_as>checkpoint1800-syslog</decoded_as>
+    <dstip>62.0.58.94</dstip>
+    <description>Traffic to Malware DNS-Trap</description>
+    <mitre>
+      <id>T1204</id>
+    </mitre>
+    <group>malware</group>
+  </rule>
+  <rule id="666667" level="0">
+    <decoded_as>checkpoint1800-syslog</decoded_as>
+    <action>accept</action>
+    <description>Firewall connection accepted</description>
+  </rule>
+  <rule id="666668" level="4">
+    <decoded_as>checkpoint1800-syslog</decoded_as>
+    <action>drop</action>
+    <description>Firewall connection dropped</description>
+    <mitre>
+      <id>T1026</id>
+    </mitre>
+  </rule>
+  <rule id="666669" level="9">
+    <decoded_as>checkpoint1800-syslog</decoded_as>
+    <action>reject</action>
+    <description>Firewall connection rejected. Send an ICMP destination-unreachable back to the source host.</description>
+    <mitre>
+      <id>T1095</id>
+    </mitre>
+  </rule>
+  <rule id="666670" level="10">
+    <decoded_as>checkpoint1800-syslog</decoded_as>
+    <action>prevent</action>
+    <description>Firewall connection prevented by Antivirus Antibot.</description>
+    <mitre>
+      <id>T1095</id>
+    </mitre>
+  </rule>
+</group>
